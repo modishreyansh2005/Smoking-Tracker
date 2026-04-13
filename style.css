@@ -205,7 +205,22 @@ body {
   flex-shrink: 0;
 }
 .log-time { font-size: 13px; color: var(--text-secondary); }
+.log-right { display: flex; align-items: center; gap: 10px; }
 .log-num { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+.log-delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+  line-height: 0;
+}
+.log-delete:hover { color: var(--accent); background: var(--accent-light); }
 .empty {
   text-align: center;
   padding: 2rem 0;

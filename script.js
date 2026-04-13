@@ -20,6 +20,15 @@ function addCigarette() {
   }
 }
 
+function removeCigarette(ts) {
+  logs = logs.filter(l => l.ts !== ts);
+  save();
+  renderToday();
+  if (document.getElementById('panel-monthly').classList.contains('active')) {
+    renderMonthly();
+  }
+}
+
 function switchTab(tab) {
   const tabs = document.querySelectorAll('.tab');
   tabs[0].classList.toggle('active', tab === 'today');
@@ -68,7 +77,14 @@ function renderToday() {
         <div class="log-dot"></div>
         <div class="log-time">${time}</div>
       </div>
-      <div class="log-num">#${today.length - i}</div>
+      <div class="log-right">
+        <div class="log-num">#${today.length - i}</div>
+        <button class="log-delete" onclick="removeCigarette(${l.ts})" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </div>
     `;
     list.appendChild(div);
   });
