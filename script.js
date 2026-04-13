@@ -35,7 +35,6 @@ function switchTab(tab) {
   tabs[1].classList.toggle('active', tab === 'monthly');
   document.getElementById('panel-today').classList.toggle('active', tab === 'today');
   document.getElementById('panel-monthly').classList.toggle('active', tab === 'monthly');
-  document.getElementById('fab-wrap').style.display = tab === 'today' ? '' : 'none';
   if (tab === 'monthly') renderMonthly();
 }
 
