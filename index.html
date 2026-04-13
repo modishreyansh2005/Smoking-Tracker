@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Smoking Tracker</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="tracker">
+  <div class="app">
     <div class="header">
       <h1>Smoking tracker</h1>
       <p id="date-label"></p>
@@ -19,71 +22,79 @@
       <button class="tab" onclick="switchTab('monthly')">Monthly</button>
     </div>
 
-    <!-- TODAY PANEL -->
-    <div class="panel active" id="panel-today">
-      <div class="stats-grid">
-        <div class="stat"><div class="stat-num danger" id="today-count">0</div><div class="stat-label">Today</div></div>
-        <div class="stat"><div class="stat-num" id="week-count">0</div><div class="stat-label">This week</div></div>
-        <div class="stat"><div class="stat-num" id="total-count">0</div><div class="stat-label">All time</div></div>
+    <div class="scroll-area">
+
+      <!-- TODAY PANEL -->
+      <div class="panel active" id="panel-today">
+        <div class="stats-grid">
+          <div class="stat"><div class="stat-num danger" id="today-count">0</div><div class="stat-label">Today</div></div>
+          <div class="stat"><div class="stat-num" id="week-count">0</div><div class="stat-label">This week</div></div>
+          <div class="stat"><div class="stat-num" id="total-count">0</div><div class="stat-label">All time</div></div>
+        </div>
+
+        <div class="goal-bar-wrap">
+          <div class="goal-bar-label"><span>Daily goal: max 10</span><span id="goal-pct">0%</span></div>
+          <div class="goal-bar-bg"><div class="goal-bar-fill" id="goal-bar" style="width:0%"></div></div>
+        </div>
+
+        <div class="section-title">Today's log</div>
+        <div class="log-list" id="log-list">
+          <div class="empty" id="empty-msg">No entries yet today</div>
+        </div>
       </div>
 
-      <div class="goal-bar-wrap">
-        <div class="goal-bar-label"><span>Daily goal: max 10</span><span id="goal-pct">0%</span></div>
-        <div class="goal-bar-bg"><div class="goal-bar-fill" id="goal-bar" style="width:0%"></div></div>
+      <!-- MONTHLY PANEL -->
+      <div class="panel" id="panel-monthly">
+        <div class="month-nav">
+          <button onclick="changeMonth(-1)">&#8592;</button>
+          <span id="month-title"></span>
+          <button onclick="changeMonth(1)">&#8594;</button>
+        </div>
+
+        <div class="m-stats">
+          <div class="m-stat"><div class="m-stat-num" id="m-total">0</div><div class="m-stat-label">Total</div></div>
+          <div class="m-stat"><div class="m-stat-num" id="m-avg">0</div><div class="m-stat-label">Daily avg</div></div>
+          <div class="m-stat"><div class="m-stat-num" id="m-peak">0</div><div class="m-stat-label">Peak day</div></div>
+        </div>
+
+        <div class="section-title">Heatmap</div>
+        <div class="calendar">
+          <div class="cal-days-header">
+            <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div>
+            <div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div>
+            <div class="cal-day-name">Sa</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+
+        <div class="legend">
+          <span class="legend-label">Less</span>
+          <div class="legend-cells">
+            <div class="legend-cell heat-0"></div>
+            <div class="legend-cell heat-1"></div>
+            <div class="legend-cell heat-2"></div>
+            <div class="legend-cell heat-3"></div>
+            <div class="legend-cell heat-4"></div>
+          </div>
+          <span class="legend-label">More</span>
+        </div>
+
+        <div class="section-title">Week-by-week</div>
+        <div class="bar-chart" id="week-bars"></div>
       </div>
 
+    </div><!-- end scroll-area -->
+
+    <!-- Floating action button — only shown on Today tab -->
+    <div class="fab-wrap" id="fab-wrap">
       <button class="add-btn" onclick="addCigarette()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
         Log a cigarette
       </button>
-
-      <div class="section-title">Today's log</div>
-      <div class="log-list" id="log-list">
-        <div class="empty" id="empty-msg">No entries yet today</div>
-      </div>
     </div>
 
-    <!-- MONTHLY PANEL -->
-    <div class="panel" id="panel-monthly">
-      <div class="month-nav">
-        <button onclick="changeMonth(-1)">&#8592;</button>
-        <span id="month-title"></span>
-        <button onclick="changeMonth(1)">&#8594;</button>
-      </div>
-
-      <div class="m-stats">
-        <div class="m-stat"><div class="m-stat-num" id="m-total">0</div><div class="m-stat-label">Total</div></div>
-        <div class="m-stat"><div class="m-stat-num" id="m-avg">0</div><div class="m-stat-label">Daily avg</div></div>
-        <div class="m-stat"><div class="m-stat-num" id="m-peak">0</div><div class="m-stat-label">Peak day</div></div>
-      </div>
-
-      <div class="section-title">Heatmap</div>
-      <div class="calendar">
-        <div class="cal-days-header">
-          <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div>
-          <div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div>
-          <div class="cal-day-name">Sa</div>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-      </div>
-
-      <div class="legend">
-        <span class="legend-label">Less</span>
-        <div class="legend-cells">
-          <div class="legend-cell heat-0"></div>
-          <div class="legend-cell heat-1"></div>
-          <div class="legend-cell heat-2"></div>
-          <div class="legend-cell heat-3"></div>
-          <div class="legend-cell heat-4"></div>
-        </div>
-        <span class="legend-label">More</span>
-      </div>
-
-      <div class="section-title">Week-by-week</div>
-      <div class="bar-chart" id="week-bars"></div>
-    </div>
   </div>
 
   <script src="script.js"></script>
